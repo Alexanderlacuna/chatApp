@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>this is a chat application</title>
+</head>
+
+<body>
+
+	<div class="rooms-container">
+		<button class="rooms">
+			room1
+		</button>
+		<button class="rooms">
+			room2
+		</button>
+		<button class="rooms">
+			room3
+		</button>
+	</div>
+
+	<!-- list of joined room -->
+
+	<div class="room_joined">
+		<button class="joined">
+			room3
+		</button>
+		<button class="joined">
+			room2
+		</button>
+
+	<div>
+
+	<div class="messages">
+		testing
+	</div>
+     <form class="form-data">
+     	
+   
+	<div>
+		username<input type="text" name="username">
+	</div>
+	<div>
+		Message<textarea name="message" placeholder="your message goes here"></textarea>
+	</div>
+	  <button id="btn" type="submit">btn</button>
+	  </form>
+
+    
+
+    <div>
+    	
+    	<button class="btn-single">emit</button>
+    	<button class="room">room</button>
+    </div>
+	
+    
+</body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+<script src="./app.js"></script>
+
+
+</html>
