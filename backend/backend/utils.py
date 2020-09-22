@@ -1,5 +1,6 @@
 from email_validator import validate_email,EmailNotValidError
 from . import bcrypt
+import uuid
 from functools import wraps
 
 def test_import():
@@ -50,7 +51,8 @@ def validate_password(pwd,hashed):
 
 def uuid_generator():
 	# return str(uuid.uu)
-	raise NotImplementedError()
+	return str(uuid.uuid4())
+	# raise NotImplementedError()
 
 def email_verification(email):
 	# assert is email the verify

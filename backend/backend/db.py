@@ -1,5 +1,5 @@
 from backend  import database as db;
-from .utils import uuid_generator,password_hash
+from .utils import uuid_generator,password_hash,isEmail,validate_password
 
 class User(db.Model):
 	id=db.Column(db.Integer,primary_key=True)
@@ -10,28 +10,40 @@ class User(db.Model):
 	groups=db.relationship("Group",backref="members",lazy=True)
 
 	@staticmethod
-	def new_user(**kwargs):
+	def new_user(data):
+		print("the data  is",data)
 		try:
-			email=kwargs.get(email)
-			public_id=uuid_generator()
-			password=kwargs.get(password)
+			email=data.get("email")
+			if isEmail(email):
+				pass
+			else:
+				return "valid email is required",401
+			
+			password=data.get("password")
 			hash_pwd=password_hash(password)
-			user=User(email,public_id,password)
+			public_id=uuid_generator()
+			user=User(email=email,public_id=public_id,password=hash_pwd)
 			db.session.add(user)
 			db.session.commit()
 
 		except Exception as e:
+			print(str(e))
 			return "Error creating user",401
 
 		return "successfully created",201
 
 
 	def user_exists(self,email,pwd):
-		raise NotImplementedError()
+		user=User.query.filter_by(email=email).first()
+		if user is not None:
+			return validate_password(pwd,user.password)
+		return False
+
+		
 	
 
 	def __repr__(self):
-		return f'user is {self.email} and public id {self.public_id}'
+		return f'{self.public_id}->{self.email}'
 class  Comment(db.Model):
 	id=db.Column(db.Integer,primary_key=True)
 	post=db.Column(db.Text,unique=False,nullable=True)
