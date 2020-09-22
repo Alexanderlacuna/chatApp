@@ -15,26 +15,13 @@ def handle_anony_mess(data):
 
 
 
-# private chat room
-# create chatroom
-@app.route("/chat/createroom")
-@validator
-def create_room(current_user):
-	data=request.json
-	group=Group.new(current_user,data)
-	return group
-
-@app.route("/chat/deleteroom/<id>")
-@validator	
-def delete_room(current_user,id):
-	return Group.delete(current_user,id)
 
 
 
 @socketio.on("join")
 @validator
 def on_join(current_user,room_data):
-	# should check whether the room exists
+	# should check whether the room exists 
 	room=room_data["room"]
 	user=current_user
 	join_room(room)
@@ -44,7 +31,16 @@ def on_join(current_user,room_data):
 def on_leave(current_user):
 	# should check whether current user is in room
 	room=data["room"]
-	leave_room('room')
+	leave_room(room)
+	emit("left_room",{current_user},room=room)
+
+
+@socketio.on("room_message")
+@validator
+def room_msg(current_user,data):
+	# check if user is a member of the room
+
+	emit("room_msg",{msg:data},room=room)
 
 
 
