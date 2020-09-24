@@ -13,6 +13,13 @@ def handle_anony_join(message):
 @socketio.on("anony_message")
 def handle_anony_mess(data):
 	print("the data is ",data)
+	message={
+	"socket_id":request.sid,
+	"data":data
+
+
+	}
+	emit("anony_send",message,broadcast=True)
 	return "success",200
 
 
