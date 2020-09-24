@@ -1,6 +1,6 @@
 from backend import socketio,app
 from flask_socketio import send,emit,join_room,leave_room
-from backend.utils import validator
+from backend.utils import validator,uuid_generator
 from flask import request
 from .db import Group;
 
@@ -15,7 +15,8 @@ def handle_anony_mess(data):
 	print("the data is ",data)
 	message={
 	"socket_id":request.sid,
-	"data":data
+	"data":data,
+	"message_id":uuid_generator()
 
 
 	}
