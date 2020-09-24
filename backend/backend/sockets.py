@@ -14,8 +14,7 @@ def handle_anony_join(message):
 def handle_anony_mess(data):
 	print("the data is ",data)
 	return "success",200
-# andruestman@gmail.com
-# Netflix4life
+
 
 
 
