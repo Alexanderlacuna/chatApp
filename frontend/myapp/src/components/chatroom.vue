@@ -5,8 +5,8 @@
           
       </div>
      
-      <div class="py-4 px-3">
-          <chatbox/>
+      <div class="py-4 px-3" v-for="message  in  getMessages" :key="message.message_id"> 
+          <chatbox :message="message"/>
       </div>
 
      <div>
@@ -17,13 +17,19 @@
 </template>
 
 <script>
-import chatbox from "@/components/chatbox.vue"
-import chatinput from "@/components/chatinput.vue"
+import chatbox from "@/components/chatbox.vue";
+import {mapGetters} from "vuex";
+import chatinput from "@/components/chatinput.vue";
 export default {
  components:{
      chatbox,
      chatinput,
 },
+  computed:{
+      ...mapGetters(["getMessages"]),
+
+
+  },
 
 
     sockets:{
@@ -36,7 +42,7 @@ export default {
 
     data:function(){
         return{
-            message:""
+            messages:[]
         }
     }
  }
