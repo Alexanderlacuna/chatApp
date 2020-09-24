@@ -4,3 +4,4 @@ flask_socketio
 email_validator
 flask_sqlalchemy
 flask_cors
+pyJWT

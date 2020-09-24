@@ -9,6 +9,8 @@ class User(db.Model):
 	comments=db.relationship("Comment",backref="creator",lazy=True)
 	groups=db.relationship("Group",backref="members",lazy=True)
 
+
+
 	@staticmethod
 	def new_user(data):
 		print("the data  is",data)
@@ -33,16 +35,37 @@ class User(db.Model):
 		return "successfully created",201
 
 
-	def user_exists(self,email,pwd):
+	def user_exists(email,pwd):
 		user=User.query.filter_by(email=email).first()
 		if user is not None:
 			return validate_password(pwd,user.password)
 		return False
 
+
+
+	def get_user(email):
+		print("call with email")
+		user=User.query.filter_by(email=email).first()
+		# print("details are ", {email:user.email,public_id:user.public_id})
+		print("the user is",user)
+		# print("the user id ",user.public_id)
+		try:
+			found_user={
+			"email":user.email,
+			"public_id":user.public_id
+
+			}
+		except Exception as e:
+			raise e
+
+		return found_user
+
+		
 		
 	
 
 	def __repr__(self):
+		# return {public_id:self.public_id,email:self.email}
 		return f'{self.public_id}->{self.email}'
 class  Comment(db.Model):
 	id=db.Column(db.Integer,primary_key=True)

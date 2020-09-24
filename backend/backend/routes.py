@@ -1,8 +1,14 @@
 from flask import jsonify,request
 from backend import app
-from backend.utils import validator
+from backend.utils import validator,jwt_generator
 from .db  import User,Group
 
+
+@app.route("/test",methods=["POST"])
+@validator
+def test(current_user):
+
+	return "yes"
 @app.route("/register",methods=["POST"])
 def create_user():
 	# create new user 
@@ -13,13 +19,21 @@ def create_user():
 	return created
 @app.route("/login",methods=["POST"])
 def login_user():
+
+	# should also check email validity
 	data=request.json
+	email=data.get("email")
+	pwd=data.get("password")
+	exists=User.user_exists(email=email,pwd=pwd)
 
-	print(data)
-	# check authenitication the generate jwt key 
-	return jsonify({"msg":"success"}),200
-	# raise NotImplementedError()
+	if (exists):
+		# should return auth key 
+		email=data.get("email")
+		return jsonify({"auth_key":jwt_generator(email)}),200
+		
 
+	return {msg:"invalid login details"},401
+	
 
 # private chat room
 # create chatroom

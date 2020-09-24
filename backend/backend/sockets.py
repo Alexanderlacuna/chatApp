@@ -6,14 +6,13 @@ from .db import Group;
 
 @socketio.on("join_public")
 def handle_anony_join(message):
-	emit("anonymous_join",message,broadcast=True)
+	print("anony has joined public")
+	emit("anonymous_join",{"data":"Anonymous person joined"},broadcast=True)
 
 @socketio.on("anony_message")
 def handle_anony_mess(data):
 	print("the data is ",data)
 	return "success",200
-
-
 
 
 

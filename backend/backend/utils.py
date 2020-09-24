@@ -1,32 +1,36 @@
 from email_validator import validate_email,EmailNotValidError
+
+from flask import request
 from . import bcrypt
+
 import uuid
 from functools import wraps
+from .config import SECRET_KEY
+import jwt
+import datetime
 
 def test_import():
 	return True
 def validator(func):
 	@wraps(func)
 	def inner_function(*args,**kwargs):
+
+		token=request.args.get("auth_key")
+		from backend.db import User
 		
-		print(f'args is {args} and kwargs are {kwargs}')
 
-
-
-
-		
-		print("calling inner function")
 		try:
-			data=args[0]
-			email=data["email"]
-			password=data["password"]
-			current_user=email or None
-			# call database to validate user
+			token=request.args.get("auth_key")
+			user_email=jwt_validator(token)
+			user_email=user_email.get("data")
+			current_user=User.get_user(user_email)
+			print("current_user is ",current_user)
 
-			# do email and password validation
-		except EmailValidError as e:
-			print("error encoutered")
-			return  "error"
+		except Exception as e:
+			print(e)
+			# print("raised excepttio here ")
+			return "authentication failed",401
+
 		return func(current_user,*args,**kwargs)
 
 	return inner_function
@@ -45,22 +49,23 @@ def  password_hash(pwd):
 	return hashed
 
 def validate_password(pwd,hashed):
-	return bcrypt.check_password(hashed,pwd)
 
-
-
+	return bcrypt.check_password_hash(hashed,pwd)
 def uuid_generator():
-	# return str(uuid.uu)
 	return str(uuid.uuid4())
-	# raise NotImplementedError()
-
+	
 def email_verification(email):
-	# assert is email the verify
 	raise NotImplementedError()
-
-
 def jwt_generator(email):
-	raise NotImplementedError()
+	encoded = jwt.encode({'data':email,"exp":datetime.datetime.utcnow()+datetime.timedelta(minutes=15)},SECRET_KEY,algorithm='HS256')
+	return encoded.decode("utf-8")
 
-def jwt_validator(jwt):
-	raise NotImplementedError()
+def jwt_validator(auth_token):
+	try:
+		user_email=jwt.decode(auth_token,SECRET_KEY,algorithm="HS256")
+	except Exception as e:
+		print(str(e))
+		raise e
+
+	return user_email
+	
