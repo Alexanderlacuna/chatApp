@@ -22,9 +22,24 @@ import chatinput from "@/components/chatinput.vue"
 export default {
  components:{
      chatbox,
-     chatinput
+     chatinput,
+},
+
+
+    sockets:{
+      anonymous_join:function(data){
+      console.log(data)
+      console.log("anonymous joined")
+    }
+         
+     },
+
+    data:function(){
+        return{
+            message:""
+        }
+    }
  }
-}
 </script>
 
 <style scoped>
