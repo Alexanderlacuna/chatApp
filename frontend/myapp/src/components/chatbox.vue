@@ -1,20 +1,35 @@
 <template>
   <div class=" w-full bg-white px-4 grid grid-cols-12 gap-2 control-box">
     <div class="col-span-3 control-user space-x-2 border-r border-gray-700">
-        <div class="px-4 py-3 bg-gray-700 rounded-full">U</div>
+        <div class="px-4 py-3 bg-gray-700 rounded-full">An</div>
         <div class="self-center">
-            username
+            <h3>Anony</h3>
+            <!-- <h3 class="overflow-hidden">{{socket_id}}</h3> -->
         </div>
     </div>
     <div class="col-span-9 px-2 py-2  font-semibold">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga deleniti id sed sequi doloremque harum enim delectus laboriosam ex vitae.
+       {{messages}}
     </div>
   </div>
 </template>
 
 <script>
-export default {
 
+export default {
+props:["message"],
+data:function(){
+    return{
+        messages:"",
+        socket_id:""
+    }
+},
+created(){
+    console.log("here it is")
+    this.messages=this.message.data.data;
+    this.socket_id=this.message.socket_id;
+    
+    // console.log(this.message.data.data)
+}
 }
 </script>
 
