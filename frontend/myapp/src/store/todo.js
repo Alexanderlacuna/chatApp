@@ -13,6 +13,10 @@ const mutations={
     ANONY_MESSAGE:(state,payload)=>{
         state.messages.push(payload)
 
+    },
+
+    RESET:(state)=>{
+        state.users=""
     }
 
 
@@ -28,12 +32,17 @@ const actions={
      console.log("received anonymous message")
      console.log(payload)
      commit("ANONY_MESSAGE",payload)
+ },
+
+ async reset_join({commit}){
+     commit("RESET")
  }
 
 }
 
 const getters={
-    getMessages:(state)=>state.messages
+    getMessages:(state)=>state.messages,
+    getAnonyJoin:(state)=>state.users,
 
 }
 

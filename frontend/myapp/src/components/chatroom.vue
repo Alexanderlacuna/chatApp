@@ -7,26 +7,37 @@
      
       <div class="py-4 px-3" v-for="message  in  getMessages" :key="message.message_id"> 
           <chatbox :message="message"/>
+        <div v-if="join">
+        <joined :user="anony_joined"/>
       </div>
 
+      </div>
+   
      <div>
          <chatinput/>
+        
      </div>
       
   </div>
 </template>
 
 <script>
+import joined from "@/components/joined.vue";
 import chatbox from "@/components/chatbox.vue";
 import {mapGetters} from "vuex";
 import chatinput from "@/components/chatinput.vue";
 export default {
+
  components:{
      chatbox,
      chatinput,
+     joined
 },
   computed:{
-      ...mapGetters(["getMessages"]),
+      ...mapGetters(["getMessages","getAnonyJoin"]),
+
+    
+      
 
 
   },
@@ -42,7 +53,10 @@ export default {
 
     data:function(){
         return{
-            messages:[]
+            messages:[],
+            join:false
+            ,
+            anony_joined:""
         }
     }
  }
