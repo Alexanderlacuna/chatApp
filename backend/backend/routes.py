@@ -1,4 +1,4 @@
-from flask import jsonify,request
+from flask import jsonify,request,redirect,url_for
 from backend import app
 from backend.utils import validator,jwt_generator
 from .db  import User,Group
@@ -18,10 +18,10 @@ def create_user():
 	print(data)
 
 	created=User.new_user(data)
-	print("the return is ",created)
-	# return created
-	# return created
-	return created
+	print(created[1])
+	if created[1]==401:
+		return created
+	return jwt_generator(data["email"]),201
 @app.route("/login",methods=["POST"])
 def login_user():
 
