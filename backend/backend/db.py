@@ -36,7 +36,9 @@ class User(db.Model):
 
 
 	def user_exists(email,pwd):
+		print("the email calling is",email)
 		user=User.query.filter_by(email=email).first()
+		print("the user found calling is ",user)
 		if user is not None:
 			return validate_password(pwd,user.password)
 		return False

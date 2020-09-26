@@ -22,9 +22,22 @@ def login_user():
 
 	# should also check email validity
 	data=request.json
-	email=data.get("email")
-	pwd=data.get("password")
-	exists=User.user_exists(email=email,pwd=pwd)
+	print("The data received is",data)
+	try:
+		email=data.get("email")
+		password=data.get("password")
+
+	except Exception as e:
+		return jsonify({"data":"Auth details are required"}),401
+
+	# print("the email add password",email,password)
+	# return {"data":"sucess"},200
+
+
+	# email=data.get("email")
+	# pwd=data.get("password")
+	exists=User.user_exists(email=email,pwd=password)
+
 
 	if (exists):
 		# should return auth key 
@@ -32,7 +45,7 @@ def login_user():
 		return jsonify({"auth_key":jwt_generator(email)}),200
 		
 
-	return {msg:"invalid login details"},401
+	return {"msg":"invalid login details"},401
 	
 
 # private chat room

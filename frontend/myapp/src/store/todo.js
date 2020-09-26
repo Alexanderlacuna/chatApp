@@ -1,3 +1,5 @@
+
+import axios from "axios";
 const state={
     users:"",
     messages:[]
@@ -22,6 +24,25 @@ const mutations={
 
 }
 const actions={
+
+ async login_user({commit},payload){
+
+    try{
+        let response=await axios.post("http://127.0.0.1:5000/login",payload);
+        console.log(response)
+
+    }
+    catch(e){
+        console.log(e)
+      console.log(e.response)
+      
+    }
+
+    commit("RESET")
+     
+     
+
+ },
  async SOCKET_anonymous_join({commit},payload){
      console.log("token received")
      console.log(payload)
