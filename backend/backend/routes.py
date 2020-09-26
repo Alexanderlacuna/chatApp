@@ -12,9 +12,14 @@ def test(current_user):
 @app.route("/register",methods=["POST"])
 def create_user():
 	# create new user 
+
+
 	data=request.json
 	print(data)
+
 	created=User.new_user(data)
+	print("the return is ",created)
+	# return created
 	# return created
 	return created
 @app.route("/login",methods=["POST"])

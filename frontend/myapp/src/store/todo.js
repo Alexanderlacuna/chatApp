@@ -24,7 +24,16 @@ const mutations={
 
 }
 const actions={
-
+async register_user({commit},payload){
+    console.log(commit)
+    try{
+      let response=await axios.post("http://127.0.0.1:5000/register",payload);
+      console.log(response)
+    }
+    catch(e){
+        console.log(e.response)
+    }
+},
  async login_user({commit},payload){
 
     try{

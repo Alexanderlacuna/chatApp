@@ -30,7 +30,7 @@ class User(db.Model):
 
 		except Exception as e:
 			print(str(e))
-			return "Error creating user",401
+			return "Invalid details or user already exists",401
 
 		return "successfully created",201
 

@@ -4,13 +4,30 @@
 
       <v-layout row class="justify-center ma-2" >
 	  			<v-flex md6>
-	  			 Sign in
+	  			 Sign up
 	  			</v-flex>
 	  			
 	  		</v-layout>
 
     </div>
       <form @submit.prevent="handleSubmit">
+          	<v-layout row class="justify-center ma-2" >
+	  			<v-flex md6>
+	  				<v-text-field
+	  				v-model="username"
+	  				color="pink darken-2"
+	  				label="Username"
+                    :rules="[validUsername]"
+      
+
+	  				required
+	  				
+	  				>
+	  					
+	  				</v-text-field>
+	  			</v-flex>
+	  			
+	  		</v-layout>
         	<v-layout row class="justify-center ma-2" >
 	  			<v-flex md6>
 	  				<v-text-field
@@ -67,12 +84,17 @@ export default {
      data:function(){
         return{
             email:"",
+            username:"",
             password:"",
             show4:false,
             pattern:/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         }
     },
     computed:{
+
+    validUsername:function(){
+        return this.username.length>=1?true:"username is required"
+    },
       checkpassword:function(){
         console.log(`password length is ${this.password.length}`)
         return this.password.length<8?"password must be atleast 8 characters":true
@@ -89,7 +111,7 @@ export default {
         const passwordLength=this.password.length>=8
         const emailValidity=this.pattern.test(this.email)
 
-        if (passwordLength && emailValidity){
+        if (passwordLength && emailValidity && this.username){
           return true
         }
         return false
@@ -97,11 +119,11 @@ export default {
     },
 
     methods:{
-      ...mapActions(['login_user']),
+      ...mapActions(['register_user']),
       handleSubmit(){
         // call actions to pass data
         console.log(this.password,this.email)
-        this.login_user({email:this.email,password:this.password})
+        this.register_user({username:this.username,email:this.email,password:this.password})
       }
     }
 
