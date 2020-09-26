@@ -3,7 +3,8 @@ import axios from "axios";
 const state={
     users:"",
     messages:[],
-    auth_key:""
+    auth_key:"",
+    current_user:""
 
 }
 const mutations={
@@ -34,6 +35,8 @@ async register_user({commit},payload){
     try{
       let response=await axios.post("http://127.0.0.1:5000/register",payload);
       console.log(response)
+      let data=response.data
+      commit("ADD_AUTH_KEY",data)
     }
     catch(e){
         console.log(e.response)
