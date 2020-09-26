@@ -10,6 +10,10 @@ def handle_anony_join(message):
 	print("anony has joined public")
 	emit("anonymous_join",{"data":request.sid},broadcast=True)
 
+
+@socketio.on("typing")
+def handle_is_typing(data):
+	emit("is_typing",{user:request.sid})
 @socketio.on("anony_message")
 def handle_anony_mess(data):
 	
