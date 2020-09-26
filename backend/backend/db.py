@@ -88,18 +88,27 @@ class Group(db.Model):
 	group_creator=db.Column(db.Integer,db.ForeignKey("user.id"),nullable=False)
 
 	@staticmethod
-	def new(current_user,**kwargs):
+	def new(current_user,data):
+		print("calling specific function")
 		public_id=uuid_generator()
-		name=kwargs.get("group_name")
+		name=data.get("items")
 		creator=current_user
-
+		print("The name is ",name)
+        
 		try:
-			user=Group(public_id,group_name=name,group_creator=creator)
-			db.session.add(user)
+			user=User.query.filter_by(email=current_user.get("email")).first();
+
+
+			group=Group(public_id=public_id,group_name=name,group_creator=user.id)
+			
+			db.session.add(group)
 			db.session.commit()
 
 		except Exception as e:
-			return str(e),403
+			# print("the excepttion is",str(e))
+			print(str(e))
+			return "Could not create group",403
+			# return str(e),403
 		return "successfully created group",201
 
 	@staticmethod

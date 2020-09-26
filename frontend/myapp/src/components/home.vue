@@ -6,7 +6,7 @@
      <div class="bg-red-400 col-span-6">
          <chatroom/>
      </div>
-     <div  class="bg-black col-span-3">
+     <div  class="col-span-3 border-l border-gray-700">
          <groups/>
      </div>
   </div>

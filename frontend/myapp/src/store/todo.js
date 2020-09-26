@@ -30,6 +30,34 @@ const mutations={
 
 }
 const actions={
+async create_group({commit,state},payload){
+    let token=state.auth_key;
+    console.log(`the token is ${token}`);
+    console.log(`the payload is ${payload}`)
+    let data={
+      items:payload
+    }
+
+    try{
+        let response=await axios.post("http://127.0.0.1:5000/chat/createroom",data,{
+            params:{
+                "auth_key":token
+
+            }
+        });
+        console.log(response);
+        console.log(commit);
+
+    }
+    catch(e){
+        console.log(e)
+        console.log(e.response)
+    }
+    
+  
+   
+
+},
 async register_user({commit},payload){
     console.log(commit)
     try{
@@ -83,6 +111,7 @@ async register_user({commit},payload){
 const getters={
     getMessages:(state)=>state.messages,
     getAnonyJoin:(state)=>state.users,
+    getAuthKey:(state)=>state.auth_key
 
 }
 

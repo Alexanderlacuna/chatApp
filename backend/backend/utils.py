@@ -14,13 +14,16 @@ def test_import():
 def validator(func):
 	@wraps(func)
 	def inner_function(*args,**kwargs):
-
+	
 		token=request.args.get("auth_key")
+
 		from backend.db import User
 		
 
 		try:
 			token=request.args.get("auth_key")
+			if token is None:
+				return "authentication failed",401
 			user_email=jwt_validator(token)
 			user_email=user_email.get("data")
 			current_user=User.get_user(user_email)
@@ -69,3 +72,4 @@ def jwt_validator(auth_token):
 
 	return user_email
 	
+

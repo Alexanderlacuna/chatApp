@@ -5,15 +5,14 @@
      </div>
      <div class="nav-inner  space-x-4">
          <div>
-             <h3>Home</h3>
+              <router-link to="/" >Home</router-link>
+            
          </div>
          <div>
              <router-link to="/login" >Login/Register</router-link>
              <!-- <h3>Login/register</h3> -->
          </div>
-         <div>
-             <h3>Create group</h3>
-         </div>
+      
          <div>
              <h3>setting</h3>
          </div>

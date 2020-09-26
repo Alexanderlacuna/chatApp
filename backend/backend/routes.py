@@ -12,13 +12,8 @@ def test(current_user):
 @app.route("/register",methods=["POST"])
 def create_user():
 	# create new user 
-
-
 	data=request.json
-	print(data)
-
 	created=User.new_user(data)
-	print(created[1])
 	if created[1]==401:
 		return created
 	return jwt_generator(data["email"]),201
@@ -55,7 +50,7 @@ def login_user():
 
 # private chat room
 # create chatroom
-@app.route("/chat/createroom")
+@app.route("/chat/createroom",methods=["POST"])
 @validator
 def create_room(current_user):
 	data=request.json
