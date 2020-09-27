@@ -61,3 +61,8 @@ def create_room(current_user):
 @validator	
 def delete_room(current_user,id):
 	return Group.delete(current_user,id)
+
+
+@app.route("/getrooms",methods=["GET"])
+def get_all():
+	return Group.get_all()

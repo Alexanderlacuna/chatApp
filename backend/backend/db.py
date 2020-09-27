@@ -1,6 +1,6 @@
 from backend  import database as db;
-from .utils import uuid_generator,password_hash,isEmail,validate_password
-
+from .utils import uuid_generator,password_hash,isEmail,validate_password,saltify
+from flask import jsonify
 class User(db.Model):
 	id=db.Column(db.Integer,primary_key=True)
 	public_id=db.Column(db.String(120),unique=True,nullable=False)
@@ -87,6 +87,19 @@ class Group(db.Model):
 	group_name=db.Column(db.String(120),nullable=False)
 	group_creator=db.Column(db.Integer,db.ForeignKey("user.id"),nullable=False)
 
+	def __repr__(self):
+		return f"{self.public_id}->{self.group_name}"
+
+    # def saltify(groups):
+    # 	store=[]
+    # 	for group  in groups:
+    # 		item={id:group.group_name,name:group_name}
+    # 		store.append(item)
+
+    # 	return stor
+
+
+
 	@staticmethod
 	def new(current_user,data):
 		print("calling specific function")
@@ -110,6 +123,14 @@ class Group(db.Model):
 			return "Could not create group",403
 			# return str(e),403
 		return "successfully created group",201
+
+	@staticmethod
+	def get_all():
+		groups=Group.query.all()
+		if len(groups)<1:
+			return "no group exists",401
+
+		return jsonify(saltify(groups)),200
 
 	@staticmethod
 	def delete(current_user,group_id):

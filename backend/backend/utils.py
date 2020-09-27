@@ -73,3 +73,6 @@ def jwt_validator(auth_token):
 	return user_email
 	
 
+def saltify(items):
+	store=[{"public_id":item.public_id,"name":item.group_name} for item in items]
+	return store
