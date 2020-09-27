@@ -122,7 +122,10 @@ class Group(db.Model):
 			print(str(e))
 			return "Could not create group",403
 			# return str(e),403
-		return "successfully created group",201
+
+		group=Group.query.filter_by(public_id=public_id);
+		return jsonify(saltify(group)),201
+		# return "successfully created group",201
 
 	@staticmethod
 	def get_all():

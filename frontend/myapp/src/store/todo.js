@@ -29,6 +29,9 @@ const mutations={
 
     RESET:(state)=>{
         state.users=""
+    },
+    ADD_GROUP:(state,payload)=>{
+        state.groups.unshift(payload)
     }
 
 
@@ -50,7 +53,10 @@ async create_group({commit,state},payload){
             }
         });
         console.log(response);
-        console.log(commit);
+    
+        response.data.forEach((group)=>{
+            commit("ADD_GROUP",group)
+        })
 
     }
     catch(e){
@@ -109,6 +115,7 @@ async register_user({commit},payload){
  async reset_join({commit}){
      commit("RESET")
  },
+
 
  async set_groups({commit}){
     try{
