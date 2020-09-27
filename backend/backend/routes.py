@@ -65,4 +65,5 @@ def delete_room(current_user,id):
 
 @app.route("/getrooms",methods=["GET"])
 def get_all():
+	print("function to get rooms called")
 	return Group.get_all()

@@ -4,7 +4,8 @@ const state={
     users:"",
     messages:[],
     auth_key:"",
-    current_user:""
+    current_user:"",
+    groups:[]
 
 }
 const mutations={
@@ -21,6 +22,9 @@ const mutations={
     ANONY_MESSAGE:(state,payload)=>{
         state.messages.push(payload)
 
+    },
+    ADD_GROUPS:(state,payload)=>{
+        state.groups=payload
     },
 
     RESET:(state)=>{
@@ -104,6 +108,20 @@ async register_user({commit},payload){
 
  async reset_join({commit}){
      commit("RESET")
+ },
+
+ async set_groups({commit}){
+    try{
+        let response=await axios.get("http://127.0.0.1:5000/getrooms");
+        console.log(response)
+        commit("ADD_GROUPS",response.data)
+
+    }
+    catch(e){
+          console.log(e.response)
+    }
+
+     
  }
 
 }
@@ -111,7 +129,8 @@ async register_user({commit},payload){
 const getters={
     getMessages:(state)=>state.messages,
     getAnonyJoin:(state)=>state.users,
-    getAuthKey:(state)=>state.auth_key
+    getAuthKey:(state)=>state.auth_key,
+    getGroups:(state)=>state.groups
 
 }
 
