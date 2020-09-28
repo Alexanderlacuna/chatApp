@@ -1,13 +1,22 @@
 from backend  import database as db;
 from .utils import uuid_generator,password_hash,isEmail,validate_password,saltify
 from flask import jsonify
+
+link=db.Table("linker",
+	db.Column("user_id",db.Integer,db.ForeignKey("user.id"),primary_key=True),
+	db.Column("group_id",db.Integer,db.ForeignKey("group.id"),primary_key=True)
+	)
+
 class User(db.Model):
 	id=db.Column(db.Integer,primary_key=True)
 	public_id=db.Column(db.String(120),unique=True,nullable=False)
 	email=db.Column(db.String(120),unique=True,nullable=False)
 	password=db.Column(db.String(120),unique=False,nullable=False)
 	comments=db.relationship("Comment",backref="creator",lazy=True)
-	groups=db.relationship("Group",backref="members",lazy=True)
+	# groups=db.relationship("Group",backref="members",lazy=True)
+    
+	joined=db.relationship("Group",secondary=link,lazy="subquery",
+		backref=db.backref("members",lazy=True))
 
 
 
@@ -43,6 +52,30 @@ class User(db.Model):
 			return validate_password(pwd,user.password)
 		return False
 
+	@staticmethod
+	def join_group(current_user,name):
+
+		try:
+			group=Group.query.filter_by(group_name=name).first()
+			user=User.query.filter_by(email=current_user.email).first()
+
+			if group is None:
+				return "no search  group exists",401
+
+			user.joined.append(group)
+			db.session.commit()
+
+
+
+		except Exception as e:
+			return str(e),401
+
+		return "successfully joined group"
+
+		
+	
+		
+
 
 
 	def get_user(email):
@@ -77,6 +110,8 @@ class  Comment(db.Model):
 	def create_comment():
 		raise NotImplementedError()
 
+# helper table to join create relationship between group and user
+
 
 
 
@@ -85,18 +120,11 @@ class Group(db.Model):
 	id=db.Column(db.Integer,primary_key=True)
 	public_id=db.Column(db.String(120),nullable=False,unique=True)
 	group_name=db.Column(db.String(120),nullable=False)
-	group_creator=db.Column(db.Integer,db.ForeignKey("user.id"),nullable=False)
+	# group_creator=db.Column(db.Integer,db.ForeignKey("user.id"),nullable=False)
+
 
 	def __repr__(self):
 		return f"{self.public_id}->{self.group_name}"
-
-    # def saltify(groups):
-    # 	store=[]
-    # 	for group  in groups:
-    # 		item={id:group.group_name,name:group_name}
-    # 		store.append(item)
-
-    # 	return stor
 
 
 
@@ -112,7 +140,8 @@ class Group(db.Model):
 			user=User.query.filter_by(email=current_user.get("email")).first();
 
 
-			group=Group(public_id=public_id,group_name=name,group_creator=user.id)
+			# group=Group(public_id=public_id,group_name=name,group_creator=user.id)
+			group=Group(public_id=public_id,group_name=name)
 			
 			db.session.add(group)
 			db.session.commit()
