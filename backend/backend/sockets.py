@@ -1,6 +1,6 @@
 from backend import socketio,app
 from flask_socketio import send,emit,join_room,leave_room
-from backend.utils import validator,uuid_generator
+from backend.utils import validator,uuid_generator,chatter
 from flask import request
 from .db import Group;
 
@@ -16,8 +16,16 @@ def handle_is_typing(data):
 	emit("is_typing",{user:request.sid})
 @socketio.on("anony_message")
 def handle_anony_mess(data):
+	print("the data received is",data)
+	
+	try:
+		username=data.get("username")
+	except Exception as e:
+		username=None
+
 	
 	message={
+	"username":username,
 	"socket_id":request.sid,
 	"data":data,
 	"message_id":uuid_generator()

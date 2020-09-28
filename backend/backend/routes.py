@@ -16,6 +16,8 @@ def create_user():
 	created=User.new_user(data)
 	if created[1]==401:
 		return created
+
+
 	return jwt_generator(data["email"]),201
 @app.route("/login",methods=["POST"])
 def login_user():
@@ -42,7 +44,8 @@ def login_user():
 	if (exists):
 		# should return auth key 
 		email=data.get("email")
-		return jsonify({"auth_key":jwt_generator(email)}),200
+		user=User.get_user(email)
+		return jsonify({"username":user.get("username"),"auth_key":jwt_generator(email)}),200
 		
 
 	return {"msg":"invalid login details"},401

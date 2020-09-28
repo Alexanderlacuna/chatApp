@@ -11,6 +11,19 @@ import datetime
 
 def test_import():
 	return True
+
+def chatter(func):
+	@wraps(func)
+	def inner_function(*args,**kwargs):
+		data=request.json
+		print("the details are",request.args)
+		try:
+			username=data["username"]
+
+		except Exception as e:
+			username=None
+		return func(username,*args,**kwargs)
+	return inner_function
 def validator(func):
 	@wraps(func)
 	def inner_function(*args,**kwargs):

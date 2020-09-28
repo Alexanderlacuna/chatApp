@@ -27,7 +27,12 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
 export default {
+  computed:{
+   ...mapGetters(["getUser"])
+ 
+  },
 
     sockets:{
     connect:function(){
@@ -46,7 +51,7 @@ export default {
 
       methods:{
       handleSubmit:function(){
-          this.$socket.emit("anony_message",{data:this.message})
+          this.$socket.emit("anony_message",{username:this.getUser,data:this.message})
           
       }
 

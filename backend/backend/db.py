@@ -9,6 +9,7 @@ link=db.Table("linker",
 
 class User(db.Model):
 	id=db.Column(db.Integer,primary_key=True)
+	username=db.Column(db.String(120),unique=False,nullable=False)
 	public_id=db.Column(db.String(120),unique=True,nullable=False)
 	email=db.Column(db.String(120),unique=True,nullable=False)
 	password=db.Column(db.String(120),unique=False,nullable=False)
@@ -25,6 +26,7 @@ class User(db.Model):
 		print("the data  is",data)
 		try:
 			email=data.get("email")
+			username=data.get("username")
 			if isEmail(email):
 				pass
 			else:
@@ -33,7 +35,7 @@ class User(db.Model):
 			password=data.get("password")
 			hash_pwd=password_hash(password)
 			public_id=uuid_generator()
-			user=User(email=email,public_id=public_id,password=hash_pwd)
+			user=User(username=username,email=email,public_id=public_id,password=hash_pwd)
 			db.session.add(user)
 			db.session.commit()
 
@@ -86,6 +88,7 @@ class User(db.Model):
 		# print("the user id ",user.public_id)
 		try:
 			found_user={
+			"username":user.username,
 			"email":user.email,
 			"public_id":user.public_id
 

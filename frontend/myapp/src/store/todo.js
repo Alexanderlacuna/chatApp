@@ -5,7 +5,8 @@ const state={
     messages:[],
     auth_key:"",
     current_user:"",
-    groups:[]
+    groups:[],
+    user:""
 
 }
 const mutations={
@@ -22,6 +23,10 @@ const mutations={
     ANONY_MESSAGE:(state,payload)=>{
         state.messages.push(payload)
 
+    },
+    ADD_USERNAME:(state,payload)=>{
+       console.log(`committed user ${payload}`)
+       state.user=payload
     },
     ADD_GROUPS:(state,payload)=>{
         state.groups=payload
@@ -86,7 +91,8 @@ async register_user({commit},payload){
         let response=await axios.post("http://127.0.0.1:5000/login",payload);
         let data=response.data
         console.log(data)
-        commit("ADD_AUTH_KEY",data)
+        commit("ADD_AUTH_KEY",data.auth_key)
+        commit("ADD_USERNAME",data.username)
 
     }
     catch(e){
@@ -137,7 +143,8 @@ const getters={
     getMessages:(state)=>state.messages,
     getAnonyJoin:(state)=>state.users,
     getAuthKey:(state)=>state.auth_key,
-    getGroups:(state)=>state.groups
+    getGroups:(state)=>state.groups,
+    getUser:(state)=>state.user || null
 
 }
 
